@@ -15,7 +15,7 @@
            <th>Name</th><th>Number of people</th><th>sq ft</th><th>Description</th>
         </tr>
         {% for subcamp in subcamp_list %}
-             <tr class="{% cycle d0,d1 %}">
+             <tr class="{% cycle 'd0' 'd1' %}">
                  <td valign="top"><a href="/subcamp/{{ subcamp.name|urlencode }}">{{ subcamp.name }}</a></td>
                  <td valign="top" align="center">{{ subcamp.numpeople }}</td>
                  <td valign="top">{{ subcamp.sqft }}</td>

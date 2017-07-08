@@ -5,7 +5,7 @@
 <h3>Create an account</h3>
 
 <div class="abox">
-      <form action="." method="post">
+      <form action="." method="post">{% csrf_token %}
         {% if form.error_dict %}
           <p class="error">Please correct the errors below:</p>
         {% endif %}

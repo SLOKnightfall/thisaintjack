@@ -8,6 +8,7 @@ class Burner(models.Model):
     user = models.ForeignKey(User)
     realname = models.CharField(max_length=200)
     mobile = models.CharField(max_length=100)
+    email = models.CharField(max_length=200)
     arrival_date = models.DateField()
 
     def __str__(self):
@@ -30,11 +31,9 @@ class SubCamp(models.Model):
 class Group(models.Model):
     TENT_CAMPING = 't'
     RV_CAMPING = 'r'
-    OFFSITE_CAMPING = 'o'
     CAMP_SITE_TYPE_CHOICES = (
         (TENT_CAMPING, "Tent camping"),
         (RV_CAMPING, "RV Camping"),
-        (OFFSITE_CAMPING, "Off-site lodging")
     )
     subcamp = models.ForeignKey(SubCamp)
     user = models.ForeignKey(User)

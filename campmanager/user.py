@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, logout, login
 from django.core.cache import cache
 from campmanager.models import Burner, Group, CACHE_KEY
+from django.shortcuts import render
 import datetime
 
 def login(request):
@@ -89,9 +90,8 @@ def myprofile(request):
         if request.POST['setup'] == '1':
             return HttpResponseRedirect('/group/0/?setup=1')
 
-    t = loader.get_template('campmanager/user/myprofile')
-    c = RequestContext(request, {
-            'msg' : msg,
+    t = 'campmanager/user/myprofile'
+    c = {  'msg' : msg,
             'realname' : burner.realname,
             'phone' : burner.mobile,
             'setup' : setup,
@@ -99,8 +99,8 @@ def myprofile(request):
 #            'arrival_date_y' : burner.arrival_date.year,
 #            'arrival_date_m' : burner.arrival_date.month,
 #            'arrival_date_d' : burner.arrival_date.day,
-    })
-    return HttpResponse(t.render(c))
+        }
+    return render(request, t, c)
 
 def profile(request, username):
 
@@ -115,35 +115,31 @@ def profile(request, username):
         else:
             burner = None
     else:
-        c = RequestContext(request, { 
-                'burner' : username,
-                'error' : "No such user, doofus!" });
-        return HttpResponse(t.render(c))
+        c =  {  'burner' : username,
+                'error' : "No such user, doofus!" }
+        return render(request, t, c)
 
     groups = Group.objects.filter(user=u.id)
-    t = loader.get_template('campmanager/user/profile')
+    t = 'campmanager/user/profile'
     if burner:
-        c = RequestContext(request, {
-                'burner' : username,
+        c = {   'burner' : username,
                 'realname' : burner.realname,
                 'phone' : burner.mobile,
                 'arrival_date' : burner.arrival_date,
                 'email' : burner.user.email,
-		'groups' : groups,
-        })
+		        'groups' : groups,
+        }
     else:
-        c = RequestContext(request, {
-                'burner' : u.username,
+        c = {   'burner' : u.username,
                 'realname' : u.first_name + " " + u.last_name,
                 'phone' : '',
                 'arrival_date' : '',
                 'email' : u.email,
-		'groups' : groups,
-        })
-    return HttpResponse(t.render(c))
+		        'groups' : groups, }
+    return render(request, t, c)
 
 def help(request):
-    t = loader.get_template('campmanager/user/help')
-    c = RequestContext(request, {})
-    return HttpResponse(t.render(c))
+    t = 'campmanager/user/help'
+    c = {}
+    return render(request, t, c)
 

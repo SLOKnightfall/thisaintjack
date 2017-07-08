@@ -22,7 +22,7 @@
     To register a group of people attending Celebrate Greg, please fill out the form below:
 {% endif %}
 
-<form action="." method="post">
+<form action="." method="post">{% csrf_token %}
     <div class="abox">
 
     Type of camping: 

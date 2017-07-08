@@ -30,7 +30,7 @@ Burner:
       <p class="error">{{ msg }}</p>
     {% endif %}
 
-<form action="." method="post">
+<form action="." method="post">{% csrf_token %}
     <div class="abox">
        Name:   
        <br/>

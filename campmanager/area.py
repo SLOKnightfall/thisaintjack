@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from campmanager.models import Burner, Group, Area, CACHE_KEY
 from django.core.cache import cache
+from django.shortcuts import render
 
 def area(request, siteid, stuffid):
 
@@ -44,11 +45,11 @@ def area(request, siteid, stuffid):
                 area.save()
                 msg = "Big stuff saved."
 
-    t = loader.get_template('campmanager/area/area')
-    c = RequestContext(request, {
+    t = 'campmanager/area/area'
+    c = {
         'msg' : msg,
         'area': area,
         'group' : group,
         'owner' : request.user.username == group.user.username
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)

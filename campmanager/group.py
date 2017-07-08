@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from campmanager.models import Burner, Group, Area, SubCamp, CACHE_KEY
 from django.core.cache import cache
+from django.shortcuts import render
 
 def group(request, siteid):
 
@@ -61,8 +62,8 @@ def group(request, siteid):
         title = "Register new group"
     else:
         title = "Group: %s" % group.name
-    t = loader.get_template('campmanager/group/group')
-    c = RequestContext(request, {
+    t = 'campmanager/group/group'
+    c = {
         'msg' : msg,
         'group': group,
         'areas': areas,
@@ -70,5 +71,5 @@ def group(request, siteid):
         'subcamps' : subcamps,
         'setup' : setup,
         'title' : title,
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)

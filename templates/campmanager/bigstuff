@@ -9,7 +9,7 @@
           <th>Name</th><th>camp site</th><th>Description</th><th>Width (ft)</th><th>Depth (ft)</th>
         </tr>
         {% for bigstuff in bigstuffs %}
-             <tr class="{% cycle d0,d1 %}">
+             <tr class="{% cycle 'd0' 'd1' %}">
                 <td><a href="/group/{{bigstuff.group.id}}/bigstuff/{{bigstuff.id}}">{{bigstuff.name}}</a></td>
                 <td><a href="/group/{{bigstuff.group.id}}">{{bigstuff.group.name}}</td>
                 <td>{{bigstuff.desc}}</td>

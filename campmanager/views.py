@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.cache import cache
 from campmanager.models import Burner, Group, Area, SubCamp, CACHE_KEY
+from django.shortcuts import render
 
 def index(request):
 
@@ -38,16 +39,16 @@ def index(request):
         if site.type == 'r': rvs += 1
     rvssqft = 900 * rvs
 
-    t = loader.get_template('campmanager/index')
-    c = RequestContext(request, {
+    t = 'campmanager/index'
+    c = {
         'subcamp_list': subcamp_list,
         'totalpeople' : totalpeople,
         'totalsubcamps' : len(subcamps),
         'totalsqft' : totalsqft,
         'rvs' : rvs,
         'rvssqft' : rvssqft,
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)
 
 types = { 't' : 'tent', 'o' : 'off-site', 'r' : "rv" }
 def subcamp(request, subcamp):
@@ -55,9 +56,9 @@ def subcamp(request, subcamp):
     subcamps = SubCamp.objects.filter(name=subcamp)
     if not subcamps:
         err = "Camp %s does not exist!" % subcamp
-        t = loader.get_template('campmanager/error')
-        c = RequestContext(request, {'err':err})
-        return HttpResponse(t.render(c))
+        t = 'campmanager/error'
+        c = {'err':err}
+        return render(request, t, c)
     else:
         subcamp = subcamps[0]
 
@@ -75,16 +76,16 @@ def subcamp(request, subcamp):
     sites = Group.objects.filter(subcamp=subcamp).order_by('-numpeople')
     for site in sites:
         site.type = types[site.type] 
-    t = loader.get_template('campmanager/subcamp')
-    c = RequestContext(request, {
+    t = 'campmanager/subcamp'
+    c = {
         'subcamp' : subcamp,
         'site_list': sites,
         'totalpeople' : totalpeople,
         'totalsites' : totalsites,
         'totalstuff' : totalstuff,
         'totalsqft' : totalsqft,
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)
 
 def burnerlist(request):
 
@@ -92,17 +93,17 @@ def burnerlist(request):
         return HttpResponseRedirect('/user/login/?next=%s' % request.path)
 
     burners = Burner.objects.all().order_by('realname')
-    t = loader.get_template('campmanager/burners')
-    c = RequestContext(request, {
+    t = 'campmanager/burners'
+    c = {
         'burners': burners
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)
 
 def bigstufflist(request):
 
     bigstuff = Area.objects.all().order_by('-name')
-    t = loader.get_template('campmanager/bigstuff')
-    c = RequestContext(request, {
+    t = 'campmanager/bigstuff'
+    c = {
         'bigstuffs': bigstuff
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render(request, t, c)
