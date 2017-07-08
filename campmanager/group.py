@@ -17,27 +17,43 @@ def group(request, siteid):
         group = Group()
         group.user = request.user
         group.numpeople = 0
+        group.numcar = 0
+        group.numrv = 0
 
     if request.method == 'POST':
         group.numpeople = 0
+        group.numcar = 0
+        group.numrv = 0
         group.user = request.user
-        group.name = request.POST['name'] 
-        group.desc = request.POST['desc'] 
-        group.type = request.POST['type'] 
-        print group.type
-    
+        group.name = request.POST['name']
+        group.desc = request.POST['desc']
+
         subcamps = SubCamp.objects.filter(name=request.POST['subcamp'])
         if subcamps:
             group.subcamp = subcamps[0]
         else:
             msg = "Error: Somehow you managed to pick an non existing camp."
-            
+
         try:
             group.numpeople = int(request.POST['numpeople'])
             if group.numpeople < 0: raise ValueError
         except ValueError:
             msg = "Error: Please enter a positive number (or 0) for number of people!"
             group.numpeople = 0
+
+        try:
+            group.numcar = int(request.POST['numcar'])
+            if group.numcar < 0: raise ValueError
+        except ValueError:
+            msg = "Error: Please enter a positive number (or 0) for number of cars!"
+            group.numcar = 0
+
+        try:
+            group.numrv = int(request.POST['numrv'])
+            if group.numrv < 0: raise ValueError
+        except ValueError:
+            msg = "Error: Please enter a positive number (or 0) for number of rvs!"
+            group.numrv = 0
 
         if int(siteid) == 0:
             try:

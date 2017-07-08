@@ -5,9 +5,14 @@
 <h3>Camps</h2>
 
 <p>
-{{totalpeople}} people in {{totalsubcamps}} camps = {{totalsqft}} sq. ft. <br/>
-{{rvs}} RVs = {{rvssqft}} sq. ft.
-</p>
+{{totalpeople}} people in {{totalsubcamps}} camps <br/>
+Total Cars =  {{totalcars}},  Total Rvs =  {{totalrvs}} <br/>
+{% if totalbigsqft > 0 %}
+Total Big Stuff = {{totalbig}} ({{totalbigsqft}})sq. ft.
+{% endif %}<br/>
+<hr>
+Estimated Space needed = {{totalsqft}} sq. ft.<br/>
+
 
 {% if subcamp_list %}
     <table>
@@ -18,7 +23,7 @@
              <tr class="{% cycle 'd0' 'd1' %}">
                  <td valign="top"><a href="/subcamp/{{ subcamp.name|urlencode }}">{{ subcamp.name }}</a></td>
                  <td valign="top" align="center">{{ subcamp.numpeople }}</td>
-                 <td valign="top">{{ subcamp.sqft }}</td>
+                 <td valign="top"align="center">{{ subcamp.sqft }}</td>
                  <td>{{subcamp.desc}}</td>
              </tr>
         {% endfor %}

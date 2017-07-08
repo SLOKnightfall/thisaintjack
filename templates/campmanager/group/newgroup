@@ -8,17 +8,17 @@
           <p class="error">Error: {{ error }}</p>
         {% endif %}
 
-        <label for="name">Camp site name:</label> 
+        <label for="name">Camp site name:</label>
         <br/>
         <input type="text" name="name" value="{{ name }}" size="80">
         <br/>
 
-        <label for="desc">Camp site description:</label> 
+        <label for="desc">Camp site description:</label>
         <br/>
         <input type="text" name="desc" value="{{ desc }}" size="80">
         <br/>
 
-        <label for="name">Number of people in group site:</label> 
+        <label for="name">Number of people in group site:</label>
         <br/>
         <input type="text" name="numpeople" value="{{ numpeople }}" size="4" width="4">
         <br/>

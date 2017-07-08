@@ -1,40 +1,30 @@
 {% extends "campmanager/layout/base.html" %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Group: {{ group.name }}{% endblock %}
+
 {% block content %}
 
-<h3>{{title}}</h3>
+<h3>Group: {{ group.name }}</h3>
 
 {% if not owner %}
 <table>
 <tr><td>Name:</td><td>{{ group.name }}</td></tr>
 <tr><td>Number of people:</td><td>{{ group.numpeople }}</td></tr>
+<tr><td>Number of cars:</td><td>{{ group.numcar }}</td></tr>
+<tr><td>Number of rvs or large vehicles:</td><td>{{ group.numrv }}</td></tr>
+
 <tr><td>Description:</td><td>{{ group.desc }}</td></tr>
-<tr><td>Group contact:</td><td><a href="/user/profile/{{group.user}}">{{ group.user }}</a></td></tr>
+<tr><td>Burner:</td><td><a href="/user/profile/{{group.user}}">{{ group.user }}</a></td></tr>
 </table>
 </p>
 {% else %}
 
-{% if msg %}
-  <p class="error">{{ msg }}</p>
-{% endif %}
-
-{% if setup %}
-    To register a group of people attending Celebrate Greg, please fill out the form below:
-{% endif %}
+	{% if msg %}
+	  <p class="error">{{ msg }}</p>
+	{% endif %}
 
 <form action="." method="post">{% csrf_token %}
     <div class="abox">
-
-    Type of camping: 
-    <br/>
-          <select name="type">
-              <option id="t" value="t" {% if group.type == 't' %}selected=""{% endif %}>tent camping</option>
-              <option id="r" value="r" {% if group.type == 'r' %}selected=""{% endif %}>RV camping</option>
-              <option id="o" value="o" {% if group.type == 'o' %}selected=""{% endif %}>off-site lodging</option>
-          </select>
-    <br/><br/>
-
-    I would like to camp with: (If you are confused about this, choose General Camping!)
+    Part of:
     <br/>
           <select name="subcamp">
              {% for subcamp in subcamps %}
@@ -46,20 +36,27 @@
              {% endfor %}
           </select>
     <br/><br/>
-
-    Group name: (ex. Aleta & Mayhem)
+    Name:
     <br/>
     <input type="text" width="80" size="80" name="name" value="{{ group.name }}">
     <br/><br/>
-    Number of people in your group/RV/travel posse:     
+    Number of people:
     <br/>
     <input type="text" width="4" size="4" name="numpeople" value="{{ group.numpeople }}">
     <br/><br/>
-    Description (tell us a bit about your camping setup): </td>
+    Number of cars:
+    <br/>
+    <input type="text" width="4" size="4" name="numcar" value="{{ group.numcar }}">
+    <br/><br/>
+    Number of rvs or large vehicles:
+    <br/>
+    <input type="text" width="4" size="4" name="numrv" value="{{ group.numrv }}">
+    <br/><br/>
+    Description:</td>
     <br/>
     <input type="text" width="1024" size="80" name="desc" value="{{ group.desc }}">
     <br/><br/>
-    Group contact:
+    Burner:
     <br/>
     <a href="/user/profile/{{group.user}}">{{ group.user }}</a>
     <br/><br/>
@@ -67,6 +64,36 @@
     </div>
 </form>
 
+
+{% endif %}
+
+{% if group.id  %}
+<h3>Big stuff areas for: {{ group.name }}</h3>
+
+{% if areas %}
+<table>
+     <tr class="h">
+        <th>Name</th>
+        <th>Desc</th>
+        <th>Size</th>
+     </tr>
+    {% for area in areas %}
+            <tr class="{% cycle 'd0' 'd1' %}">
+            <td><a href="/group/{{ group.id }}/bigstuff/{{ area.id }}">{{ area.name }}</a></td>
+            <td>{{ area.desc }}</td>
+            <td>{{ area.width }} x {{ area.height }} ft.</td>
+         </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>None</a>
+{% endif %}
+
+{% if owner %}
+<p>
+<a href="/group/{{group.id}}/bigstuff/0">Add more big stuff</a>
+</p>
+{% endif %}
 
 {% endif %}
 

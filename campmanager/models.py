@@ -40,6 +40,8 @@ class Group(models.Model):
     name = models.CharField(max_length=80)
     desc = models.CharField(max_length=1024)
     numpeople = models.IntegerField()
+    numcar = models.IntegerField()
+    numrv = models.IntegerField()
     type = models.CharField(max_length=1, choices=CAMP_SITE_TYPE_CHOICES, default=TENT_CAMPING)
 
     def __str__(self):

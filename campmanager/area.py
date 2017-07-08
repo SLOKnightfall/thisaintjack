@@ -28,14 +28,14 @@ def area(request, siteid, stuffid):
         if request.method == 'POST':
             area.numpeople = 0
             area.user = request.user
-            area.name = request.POST['name'] 
-            area.desc = request.POST['desc'] 
+            area.name = request.POST['name']
+            area.desc = request.POST['desc']
 
             if area.name == "" or area.desc == "": msg = "Please enter the name of the big stuff and a short description."
             try:
                 area.width = int(request.POST['width'])
                 area.height = int(request.POST['height'])
-                if area.width <= 0 or area.height <= 0: raise ValueError
+                if area.width < 0 or area.height < 0: raise ValueError
             except ValueError:
                 msg = "Please enter a positive number for both dimensions, tard bucket!"
                 area.width = 0
