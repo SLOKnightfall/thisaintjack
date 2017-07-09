@@ -1,5 +1,6 @@
 #from django.conf.urls import patterns, include, url
 from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -27,7 +28,8 @@ urlpatterns = [
     url(r'^user/newlogin/$', user.newlogin, name = 'newlogin'),
     url(r'^user/profile/(?P<username>[\w\s\.-]+)/$', user.profile, name= 'profile'),
     url(r'^user/profile/$', user.myprofile, name = 'myprofile'),
-    url(r'^user/login/$', user.login, name = 'login'),
+    #url(r'^user/login/$', user.login, name = 'login'),
+    url(r'^user/login/$', auth_views.login, {'template_name': 'campmanager/user/login'},  name='login'),
     url(r'^user/logout/$', user.logoff, name = 'logoff'),
     url(r'^user/login_error/', user.login_error, name = 'login_error'),
     url(r'^user/login_created/', user.login_created, name = 'login_created'),

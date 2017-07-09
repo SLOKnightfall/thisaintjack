@@ -16,10 +16,16 @@ Please do enter these so people can get a hold of each other!
 
 <p>
 <form method="post" action="/user/profile/">{% csrf_token %}
-Real Name:<br/>
+User Name:<br/>
 <input type="text" len="50" name="realname" value="{{realname}}"><br/>
 <br/>
-email:<br/>
+First Name:<br/>
+<input type="text" len="50" name="first_name" value="{{first_name}}"><br/>
+<br/>
+Last Name:<br/>
+<input type="text" len="50" name="last_name" value="{{last_name}}"><br/>
+<br/>
+Email:<br/>
 <input type="text" len="25" name="email" value="{{email}}"><br/>
 <br/>
 phone num: (mobile preferred)<br/>

@@ -69,11 +69,18 @@ def myprofile(request):
         burner = Burner(user=request.user)
 
     if request.method == 'POST':
+        user = User.objects.get(username = burner.user)
         burner.realname = request.POST['realname']
+        user.username = request.POST['realname']
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.email = request.POST['email']
+        burner.email = request.POST['email']
         burner.mobile = request.POST['phone']
         burner.arrival_date = "2012-10-13"
         msg = "Profile saved."
         burner.save()
+        user.save()
 
 #        try:
 #            burner.arrival_date = datetime.datetime.strptime(request.POST['arrival_date'], "%m-%d-%Y") #.strftime("%Y-%m-%d")
@@ -88,6 +95,8 @@ def myprofile(request):
     t = 'campmanager/user/myprofile'
     c = {  'msg' : msg,
             'realname' : burner.realname,
+            'first_name':burner.user.first_name,
+            'last_name':burner.user.last_name,
             'phone' : burner.mobile,
             'email': burner.email,
             'setup' : setup,
@@ -119,7 +128,7 @@ def profile(request, username):
     t = 'campmanager/user/profile'
     if burner:
         c = {   'burner' : username,
-                'realname' : burner.realname,
+                'realname' : burner.user.first_name + " " +burner.user.last_name,
                 'phone' : burner.mobile,
                 'arrival_date' : burner.arrival_date,
                 'email' : burner.user.email,
