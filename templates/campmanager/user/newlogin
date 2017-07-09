@@ -3,7 +3,10 @@
 
 {% block content %}
 <h3>Create an account</h3>
-
+</p>
+Fill in the following information to create a new account.</br>
+Additionally you will need to provide the 'Magic Word' to verify that you have been cleared to camp with us. 
+</p>
 <div class="abox">
       <form action="." method="post">{% csrf_token %}
         {% if form.error_dict %}

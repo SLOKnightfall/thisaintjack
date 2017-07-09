@@ -3,7 +3,7 @@
 
 {% block content %}
 <h2>Login</h2>
-
+</p>
 To register to be part of FANDANGO! Village you will need to initally <a href="/user/newlogin">create an account</a>.</br>
 After your account is created you can log in using the form below or via one of the social services</br>
 if it has been linked it to your accout

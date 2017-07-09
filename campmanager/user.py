@@ -3,13 +3,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django import forms as forms
 from django.shortcuts import render_to_response
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.core.cache import cache
 from campmanager.models import Burner, Group, CACHE_KEY
-from campmanager.forms import SignUpForm
+from campmanager.forms import SignUpForm, MyProfileForm
 from django.shortcuts import render
+from django.contrib.auth import update_session_auth_hash
 import datetime
 
 def login(request):
@@ -63,35 +64,58 @@ def myprofile(request):
         return HttpResponseRedirect('/user/login/?next=%s' % request.path)
 
     burnerList = Burner.objects.filter(user=request.user.id)
+    user = User.objects.get(username = request.user)
     if burnerList:
         burner = burnerList[0]
     else:
         burner = Burner(user=request.user)
 
     if request.method == 'POST':
-        user = User.objects.get(username = burner.user)
-        burner.realname = request.POST['realname']
-        user.username = request.POST['realname']
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        burner.email = request.POST['email']
-        burner.mobile = request.POST['phone']
-        burner.arrival_date = "2012-10-13"
-        msg = "Profile saved."
-        burner.save()
-        user.save()
+        if 'A' in request.POST:
+            form = MyProfileForm(request.POST, user=request.user)
+            pw_form = PasswordChangeForm(request.user)
 
-#        try:
-#            burner.arrival_date = datetime.datetime.strptime(request.POST['arrival_date'], "%m-%d-%Y") #.strftime("%Y-%m-%d")
-#            msg = "Profile saved."
-#            burner.save()
-#        except ValueError:
-#            msg = "Invalid arrival date. Please format mm-dd-yyyy."
-#            burner.arrival_date = datetime.date.today()
-        if request.POST['setup'] == '1':
-            return HttpResponseRedirect('/group/0/?setup=1')
+            if form.is_valid():
+                burner.realname = form.cleaned_data.get('username')
+                user.username = form.cleaned_data.get('username')
+                user.first_name = form.cleaned_data.get('first_name')
+                user.last_name = form.cleaned_data.get('last_name')
+                user.email = form.cleaned_data.get('email')
+                burner.email = form.cleaned_data.get('email')
+                burner.mobile = form.cleaned_data.get('phone')
+                burner.arrival_date = "2012-10-13"
+                msg = "Profile saved."
+                burner.save()
+                user.save()
+        if 'B' in request.POST:
+            form = MyProfileForm(initial={'username': user.username,
+                                            'first_name':user.first_name,
+                                            'last_name':user.last_name,
+                                            'email':user.email,
+                                            'phone':burner.mobile})
+            pw_form = PasswordChangeForm(request.user, request.POST)
 
+            if pw_form.is_valid():
+                user = pw_form.save()
+                update_session_auth_hash(request, user)  # Important!
+                msg = 'Your password was successfully updated!'
+    #        try:
+    #            burner.arrival_date = datetime.datetime.strptime(request.POST['arrival_date'], "%m-%d-%Y") #.strftime("%Y-%m-%d")
+    #            msg = "Profile saved."
+    #            burner.save()
+    #        except ValueError:
+    #            msg = "Invalid arrival date. Please format mm-dd-yyyy."
+    #            burner.arrival_date = datetime.date.today()
+            #if request.POST['setup'] == '1':
+            #    return HttpResponseRedirect('/group/0/?setup=1')
+    else:
+        form = MyProfileForm(initial={'username': user.username,
+                                        'first_name':user.first_name,
+                                        'last_name':user.last_name,
+                                        'email':user.email,
+                                        'phone':burner.mobile})
+
+        pw_form = PasswordChangeForm(request.user)
     t = 'campmanager/user/myprofile'
     c = {  'msg' : msg,
             'realname' : burner.realname,
@@ -100,6 +124,8 @@ def myprofile(request):
             'phone' : burner.mobile,
             'email': burner.email,
             'setup' : setup,
+            'form': form,
+            'pw_form':pw_form,
 #            'arrival_date' : str(burner.arrival_date) or "",
 #            'arrival_date_y' : burner.arrival_date.year,
 #            'arrival_date_m' : burner.arrival_date.month,
