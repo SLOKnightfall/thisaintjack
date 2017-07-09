@@ -31,7 +31,7 @@ def index(request):
             subcamppeople += site.numpeople
             totalcars += site.numcar
             totalrvs += site.numrv
-            rvsqft = int(site.numrv) * 150
+            rvsqft = int(site.numrv) * 200
             totalrvqsft += rvsqft
             for stuff in bigstuff:
                 if site.id == stuff.group.id:
@@ -39,7 +39,7 @@ def index(request):
                     bigsqft += (stuff.width * stuff.height)
                     totalbigsqft += bigsqft
 
-            sqft = int(subcamppeople) * 500 + bigsqft + rvsqft
+            sqft = int(subcamppeople) * 500
         totalsqft += sqft
         sqft = locale.format("%d", sqft, grouping=True)
         subcamp_list.append({ 'name' : subcamp.name,
@@ -49,7 +49,7 @@ def index(request):
 
 
     locale.setlocale(locale.LC_ALL, "")
-    totalsqft = locale.format("%d", (totalsqft + totalbigsqft + totalrvqsft), grouping=True)
+    totalsqft = locale.format("%d", (totalsqft), grouping=True)
 
     subcamps = SubCamp.objects.all().order_by('-name')
     sites = Group.objects.all().order_by('-numpeople')
@@ -101,7 +101,7 @@ def subcamp(request, subcamp):
     totalstuff = Area.objects.count()
 
     locale.setlocale(locale.LC_ALL, "")
-    totalsqft = locale.format("%d", (int(totalpeople) * 500)+(int(totalrvs) * 150)+totalbigsqft, grouping=True)
+    totalsqft = locale.format("%d", (int(totalpeople) * 500), grouping=True)
     sites = Group.objects.filter(subcamp=subcamp).order_by('-numpeople')
     for site in sites:
         site.type = types[site.type]

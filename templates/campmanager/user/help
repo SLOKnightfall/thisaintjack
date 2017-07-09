@@ -54,4 +54,25 @@ bigger than 10'x10'.</li>
 </ul>
 </div>
 
+
+<h4>The Math</h4>
+<br/>
+
+<div class="box">
+<ul>
+Through the years we found that the number of happy campers = space assigned in square feet / 500.<br/>
+<br/>
+At that density, zero planning is needed. People organize themselves spontaneously on site.<br/>
+<br/>
+In general, person + their vehicle footprint + their shit = 400 sq ft, which leaves 100 sq ft / person for community space -- bar, public areas, spaces between personal stuff where people walk etc.<br/>
+<br/>
+
+It's possible to pack people far more densely than that, but it usually starts to take actual work and planning.<br/>
+So at the beginning, it's just useful to do the simple math total no. people x 400 sq ft + total area of big shit (shade) should be less than total area assigned or more serious planning will probably be needed.
+
+</ul>
+</div>
+
+
+
 {% endblock %}

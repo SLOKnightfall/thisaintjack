@@ -4,6 +4,10 @@
 {% block content %}
 <h3>Big Stuff</h3>
 {% if bigstuffs %}
+
+
+<li>Total Big Stuff = {{bigstuff}} ({{totalsqft}} sq. ft.)</li>
+
     <table>
         <tr class="h">
           <th>Name</th><th>camp site</th><th>Description</th><th>Width (ft)</th><th>Depth (ft)</th>

@@ -15,8 +15,8 @@
 
     <div id="header">
 		<div id="headercontent">
-            <h1><span>This Ain't</span> Jack!</h1>
-            <h2>an attempt at fecal cohesion without Jack Porter</h2>
+            <h1><span>FANDANGO! Registration</span></h1>
+            <h2>Camp registration for that big thing in the desert</h2>
 		</div>
     </div>
 
@@ -24,7 +24,7 @@
         {% if user.is_authenticated %}
           Logged in as <b>{{ user.username }}</b>
         {% else %}
-          Your ass is not logged in.
+          You're not logged in.
         {% endif %}
 	</div>
 
@@ -35,10 +35,10 @@
 			<li><a href="/">Sub camps</a></li>
             <li><a href="/bigstuff">Big stuff</a></li>
             {% if user.is_authenticated %}
-                 <li><a href="/burners">Burners</a></li>
                 <li><a href="/group/0">Register group</a></li>
-                <li><a href="/user/logout">Logout</a></li>
+                <li><a href="/burners">Contact List</a></li>
                 <li><a href="/user/profile">Profile</a></li>
+                <li><a href="/user/logout">Logout</a></li>
             {% else %}
                 <li><a href="/user/login">Login</a></li>
             {% endif %}
@@ -53,7 +53,7 @@
 	</div>
 
 	<div id="footer">
-			<div class="left">&copy; 2007 This Ain't Jack! All rights wronged.</div>
+			<div class="left">&copy; 2017 This Ain't Jack! All rights wronged.</div>
 			<div class="right"> Design by <a href="http://www.nodethirtythree.com/">NodeThirtyThree</a>. Jank by <a href="http://mayhem-chaos.net">Mayhem</a>. <a href="/admin">Admin</a>
 	</div>
 

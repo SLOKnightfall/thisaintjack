@@ -56,7 +56,7 @@
     <br/>
     <input type="text" width="1024" size="80" name="desc" value="{{ group.desc }}">
     <br/><br/>
-    Burner:
+    Group Contact:
     <br/>
     <a href="/user/profile/{{group.user}}">{{ group.user }}</a>
     <br/><br/>

@@ -5,14 +5,13 @@
 <h3>{{subcamp.name}} camp</h2>
 
 <p>
-{{totalpeople}} people in {{totalsites}} groups <br/>
-Total Cars =  {{totalcars}},  Total Rvs =  {{totalrvs}} <br/>
+{{totalpeople}} people in {{totalsites}} groups ({{totalsqft}} sq. ft.)<br/>
+<span style="margin-left:2em">Which incluldes {{totalcars}} Cars and {{totalrvs}} Large Vehicles</span><br></li>
 {% if totalbigsqft > 0 %}
-Total Big Stuff = {{totalbig}} ({{totalbigsqft}})sq. ft.
+<li>Total Big Stuff = {{totalbig}} ({{totalbigsqft}} sq. ft.)</li>
 {% endif %}<br/>
 <hr>
-Estimated Space needed = {{totalsqft}} sq. ft.<br/>
-</p>
+Estimated Space needed = {{ totalsqft|add:totalbigsqft }} sq. ft.<br/>
 
 {% if site_list %}
     <table>
