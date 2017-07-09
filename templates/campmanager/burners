@@ -6,12 +6,12 @@
 {% if burners %}
     <table>
         <tr class="h">
-          <th>Login</th><th>Real Name</th><th>Mobile</th><th>e-mail</th>
+          <th>Playa Name</th><th>Real Name</th><th>Mobile</th><th>E-mail</th>
         </tr>
         {% for burner in burners %}
              <tr class="{% cycle 'd0' 'd1' %}">
                 <td><a href="/user/profile/{{burner.user.username}}">{{burner.user.username}}</td>
-                <td>{{burner.realname}}</td>
+                <td>{{burner.user.first_name}} {{burner.user.last_name}}</td>
                 <td>{{burner.mobile}}</td>
                 <td>{{burner.user.email}}</td>
              </tr>

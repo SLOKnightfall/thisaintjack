@@ -19,11 +19,48 @@ Please do enter these so people can get a hold of each other!
 Real Name:<br/>
 <input type="text" len="50" name="realname" value="{{realname}}"><br/>
 <br/>
+email:<br/>
+<input type="text" len="25" name="email" value="{{email}}"><br/>
+<br/>
 phone num: (mobile preferred)<br/>
 <input type="text" len="25" name="phone" value="{{phone}}"><br/>
 <!--br/>
 arrival date:<br/>
 <input id="datepicker" type="text" len="25" name="arrival_date" value="{{arrival_date_m}}-{{arrival_date_d}}-{{arrival_date_y}}"><br/-->
+<br/>
+
+<h3>Gmail</h3>
+{% if google_login %}
+  <p>Connected as <a href="https://facebook.com/{{ facebook_login.extra_data.id }}/" target="_blank">{{ facebook_login.extra_data.id }}</a></p>
+  {% if can_disconnect %}
+    <form method="post" action="{% url 'social:disconnect' 'google' %}">
+      {% csrf_token %}
+      <button type="submit">Disconnect from Google</button>
+    </form>
+  {% else %}
+    <button type="button" disabled>Disconnect from FGoogle</button>
+    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a> for your account before disconnecting from Google.</p>
+  {% endif %}
+{% else %}
+  <a href="{% url 'social:begin' 'facebook' %}">Connect to Google</a>
+{% endif %}
+
+<h3>Facebook</h3>
+{% if facebook_login %}
+  <p>Connected as <a href="https://facebook.com/{{ facebook_login.extra_data.id }}/" target="_blank">{{ facebook_login.extra_data.id }}</a></p>
+  {% if can_disconnect %}
+    <form method="post" action="{% url 'social:disconnect' 'facebook' %}">
+      {% csrf_token %}
+      <button type="submit">Disconnect from Facebook</button>
+    </form>
+  {% else %}
+    <button type="button" disabled>Disconnect from Facebook</button>
+    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a> for your account before disconnecting from Facebook.</p>
+  {% endif %}
+{% else %}
+  <a href="{% url 'social:begin' 'facebook' %}">Connect to Facebook</a>
+{% endif %}
+
 <br/>
 <input type="hidden" name="setup" value="{{ setup }}">
 {% if setup %}

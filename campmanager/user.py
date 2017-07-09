@@ -4,9 +4,11 @@ from django.contrib.auth.models import User
 from django import forms as forms
 from django.shortcuts import render_to_response
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as auth_login
 from django.core.cache import cache
 from campmanager.models import Burner, Group, CACHE_KEY
+from campmanager.forms import SignUpForm
 from django.shortcuts import render
 import datetime
 
@@ -27,34 +29,27 @@ def disconnected(request):
     return HttpResponseRedirect("/")
 
 def newlogin(request):
-    form = UserCreationForm()
     if request.method == 'POST':
-        data = request.POST.copy()
-        errors = form.get_validation_errors(data)
-        if not errors:
-            if data['magicword'] == "bacon":
-		new_user = form.save(data)
-		burner = Burner()
-		burner.user = new_user
-		burner.save()
-		cache.delete(CACHE_KEY)
-		user = authenticate(username=data['username'], password=data['password1'])
-		if user: login(request, user)
-		return HttpResponseRedirect("/user/profile")
-            else:
-                # this is a total cheat, but doing this without an entry in the model is a pita
-                data['badmagicword'] = "1"
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            new_user = form.save()
+            burner = Burner()
+            burner.user = new_user
+            burner.arrival_date = "2012-10-13"
+            burner.email = form.cleaned_data.get('email')
+            burner.realname = form.cleaned_data.get('username')
+            burner.save()
+            cache.delete(CACHE_KEY)
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            if user: auth_login(request, user)
+            return HttpResponseRedirect("/user/profile")
 
     else:
-        data, errors = {}, {}
-        try:
-            del data['badmagicword']
-        except KeyError:
-            pass
-
-    return render_to_response("campmanager/user/newlogin", {
-        'form' : forms.FormWrapper(form, data, errors)
-    })
+        form = SignUpForm()
+    return render(request, 'campmanager/user/newlogin', {'form': form})
 
 def logoff(request):
     logout(request)
@@ -68,13 +63,13 @@ def myprofile(request):
         return HttpResponseRedirect('/user/login/?next=%s' % request.path)
 
     burnerList = Burner.objects.filter(user=request.user.id)
-    if burnerList: 
+    if burnerList:
         burner = burnerList[0]
     else:
         burner = Burner(user=request.user)
 
     if request.method == 'POST':
-        burner.realname = request.POST['realname'] 
+        burner.realname = request.POST['realname']
         burner.mobile = request.POST['phone']
         burner.arrival_date = "2012-10-13"
         msg = "Profile saved."
@@ -94,6 +89,7 @@ def myprofile(request):
     c = {  'msg' : msg,
             'realname' : burner.realname,
             'phone' : burner.mobile,
+            'email': burner.email,
             'setup' : setup,
 #            'arrival_date' : str(burner.arrival_date) or "",
 #            'arrival_date_y' : burner.arrival_date.year,
@@ -110,7 +106,7 @@ def profile(request, username):
     u = User.objects.get(username__exact=username)
     if u:
         burnerList = Burner.objects.filter(user=u.id)
-        if burnerList: 
+        if burnerList:
             burner = burnerList[0]
         else:
             burner = None
@@ -142,4 +138,3 @@ def help(request):
     t = 'campmanager/user/help'
     c = {}
     return render(request, t, c)
-

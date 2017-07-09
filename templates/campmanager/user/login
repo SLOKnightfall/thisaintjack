@@ -4,9 +4,37 @@
 {% block content %}
 <h2>Login</h2>
 
+
+
+{% if form.has_errors %}
+<p>Your username and password didn't match!</p>
+{% endif %}
+
+<div class="abox">
+<form method="post" action=".">
+<label for="id_username">Username:</label>
+<br/>
+{{ form.username }}
+<br/>
+<label for="id_password">Password:</label>
+<br/>
+{{ form.password }}
+<br/>
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+</div>
 <br/>
 <p>
-To RSVP for the Celebrate Greg party you will need to log in via one of these services. 
+
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+<br>
+To RSVP for the Celebrate Greg party you will need to log in via one of these services.
 Choose your preferred service (we recommend Google) to login with by clicking one of the links
 below and then following the directions on the next page:
 </p>
