@@ -37,10 +37,12 @@ def index(request):
                 if site.id == stuff.group.id:
                     totalbig += 1
                     bigsqft += (stuff.width * stuff.height)
-                    totalbigsqft += bigsqft
+
 
             sqft = int(subcamppeople) * 500
+        totalbigsqft += bigsqft
         totalsqft += sqft
+        sqft += bigsqft
         sqft = locale.format("%d", sqft, grouping=True)
         subcamp_list.append({ 'name' : subcamp.name,
                               'numpeople' : subcamppeople,
