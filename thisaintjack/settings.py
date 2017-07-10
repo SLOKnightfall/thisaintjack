@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-
 from thisaintjack import site_config
 
 THISAINTJACK_HOME = site_config.THISAINTJACK_HOME
@@ -20,25 +19,23 @@ THISAINTJACK_URL  = site_config.THISAINTJACK_URL
 SECRET_KEY        = site_config.SECRET_KEY
 ADMINS            = site_config.ADMINS
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
 MANAGERS = ADMINS
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 
+SECRET_KEY        = site_config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['.fandangobrc.com', ]
 
 
 # Application definition
@@ -91,34 +88,13 @@ WSGI_APPLICATION = 'thisaintjack.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '', #os.path.join(THISAINTJACK_HOME, 'thisaintjack.db'),                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+DATABASES = site_config.THISAINTJACK_DATABASES
 
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
 ]
 
 
@@ -139,7 +115,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT = ''
+STATIC_ROOT = '/home/neowolf/FandangoRegistration/public/static/'
 
 STATIC_URL = '/static/'
 
@@ -156,7 +132,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.yahoo.YahooOpenId',
-
+    'social_core.backends.facebook.FacebookOAuth2',
     #'django_openid_auth.auth.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -164,7 +140,8 @@ AUTHENTICATION_BACKENDS = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = site_config.GOOGLE_OAUTH2_CLIENT_ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = site_config.GOOGLE_OAUTH2_CLIENT_SECRET
-
+SOCIAL_AUTH_FACEBOOK_KEY = site_config.FACEBOOK_APP_ID
+SOCIAL_AUTH_FACEBOOK_SECRET = site_config.FACEBOOK_API_SECRET
 
 #TWITTER_CONSUMER_KEY         = site_config.TWITTER_CONSUMER_KEY
 #TWITTER_CONSUMER_SECRET      = site_config.TWITTER_CONSUMER_SECRET
@@ -183,6 +160,8 @@ SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/user/disconnected/'
 SOCIAL_AUTH_BACKEND_ERROR_URL = '/user/login_error'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '2.9'
+
 #SOCIAL_AUTH_USER_MODEL = 'foo.bar.User'
 
 
@@ -195,13 +174,21 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 #SOCIAL_AUTH_INACTIVE_USER_URL = '/inactive-user/'
 
 SOCIAL_AUTH_PIPELINE = (
+    #'social_core.pipeline.social_auth.social_details',
+    #'social_core.pipeline.social_auth.social_uid',
+    #'social_core.pipeline.social_auth.social_user',
+    #'social_core.pipeline.user.get_username',
+    #'social_core.pipeline.user.create_user',
+    #'social_core.pipeline.social_auth.associate_user',
+    #'social_core.pipeline.social_auth.load_extra_data',
+    #'social_core.pipeline.user.user_details',
+    #'social_core.pipeline.social_auth.associate_by_email',
+
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-    'social_core.pipeline.social_auth.associate_by_email',
+    #'social_core.pipeline.social_auth.load_extra_data',
+    #'social_core.pipeline.user.user_details',
 )

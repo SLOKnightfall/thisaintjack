@@ -70,6 +70,12 @@ def myprofile(request):
     else:
         burner = Burner(user=request.user)
 
+    google_login = request.user.social_auth.filter(provider='google-oauth2')
+    facebook_login = request.user.social_auth.filter(provider='facebook')
+
+    msg = facebook_login
+
+
     if request.method == 'POST':
         if 'A' in request.POST:
             form = MyProfileForm(request.POST, user=request.user)
@@ -126,6 +132,8 @@ def myprofile(request):
             'setup' : setup,
             'form': form,
             'pw_form':pw_form,
+            'google_login':google_login,
+            'facebook_login':facebook_login
 #            'arrival_date' : str(burner.arrival_date) or "",
 #            'arrival_date_y' : burner.arrival_date.year,
 #            'arrival_date_m' : burner.arrival_date.month,
